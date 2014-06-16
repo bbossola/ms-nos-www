@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d [%thread] %-5level %logger{0} - %msg%n%rEx</pattern>
+		</encoder>
+	</appender>
+	
+  	<logger name="org.apache.http" level="INFO"/>
+  	<logger name="org.apache.http.wire" level="WARN"/>
+  	<logger name="org.quartz.core" level="WARN"/>
+
+	<!-- 
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+	</root>
+	-->
+	
+	<root level="DEBUG">
+		<appender-ref ref="STDOUT" />
+	</root>
+
+	
+	<!-- specific event logger configuration -->
+
+	<appender name="events.in.appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/tmp/events.in.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>events.in.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyyMMdd-HH:mm:ss} | %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="events.in" level="INFO" additivity="false">
+		<appender-ref ref="events.in.appender" />
+	</logger>
+
+	<appender name="events.killed.appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/tmp/events.killed.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>events.killed.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyyMMdd-HH:mm:ss} | %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="events.killed" level="INFO" additivity="false">
+		<appender-ref ref="events.killed.appender" />
+	</logger>
+
+	<appender name="events.out.appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>/tmp/events.out.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>events.out.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>5</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyyMMdd-HH:mm:ss} | %m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="events.out" level="INFO" additivity="false">
+		<appender-ref ref="events.out.appender" />
+	</logger>
+
+</configuration>

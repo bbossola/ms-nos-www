@@ -1,0 +1,8 @@
+Application Name=${project.artifactId}
+Application Version=${project.version}
+Build Time=${timestamp}
+Builder Number=${env.BUILD_NUMBER}
+Build Id=${env.BUILD_ID}
+Job name=${env.JOB_NAME}
+Build tag=${env.BUILD_TAG}
+Git commit=${env.GIT_COMMIT}
