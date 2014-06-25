@@ -26,6 +26,7 @@ import com.msnos.www.core.MessageStore;
 import com.msnos.www.servlet.CoreServlet;
 import com.workshare.msnos.core.Iden;
 import com.workshare.msnos.core.Message;
+import com.workshare.msnos.core.MessageBuilder;
 import com.workshare.msnos.core.serializers.WireJsonSerializer;
 import com.workshare.msnos.core.serializers.WireSerializer;
 
@@ -94,7 +95,7 @@ public abstract class AbstractCoreServletTest {
 	;
 
     protected Message newSampleMessage(final Iden from, final Iden to) {
-        return new Message(Message.Type.ENQ, from, to, 1, false, null);
+        return new MessageBuilder(Message.Type.ENQ, from, to).make();
     }
 
 }
