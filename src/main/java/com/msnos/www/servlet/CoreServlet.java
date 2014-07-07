@@ -55,10 +55,15 @@ public final class CoreServlet extends HttpServlet {
         addStandardHeaders(response);
 
         try {
-            UUID cloud = UUID.fromString(request.getParameter("cloud"));
-            UUID message = UUID.fromString(request.getParameter("message"));
+            UUID cloud = getUUIDFromParameter(request, "cloud", false);
+            UUID message = getUUIDFromParameter(request, "message", true);
+            if (log.isDebugEnabled()) log.debug("RX from cloud {} based on message {}", cloud, message);
             List<Message> values = messages.load(cloud, message);
             for (Message msg: values) {
+                if (msg == null)
+                    continue;
+                
+                if (log.isDebugEnabled()) log.debug("Sending message {}", msg);
                 response.getWriter().println(serializer.toText(msg));
             }
             response.setStatus(200);
@@ -75,7 +80,8 @@ public final class CoreServlet extends HttpServlet {
 
         BufferedReader reader = request.getReader();
         try {
-            UUID cloud = UUID.fromString(request.getParameter("cloud"));
+            UUID cloud = getUUIDFromParameter(request, "cloud", false);
+            if (log.isDebugEnabled()) log.debug("TX from cloud {}", cloud);
             String text = null;
             while((text = reader.readLine()) != null) {
                 if (!text.trim().isEmpty()) {
@@ -83,7 +89,7 @@ public final class CoreServlet extends HttpServlet {
                     try {
                         Message message = serializer.fromText(text, Message.class);
                         messages.store(cloud, message);
-                        if (log.isDebugEnabled()) log.debug("Storing message: "+message);
+                        if (log.isDebugEnabled()) log.debug("Storing message {}",message);
                     } catch (Exception ex) {
                         log.warn("Unable to process message "+text, ex);
                     }
@@ -97,6 +103,14 @@ public final class CoreServlet extends HttpServlet {
         finally {
             reader.close();
         }
+    }
+
+    private UUID getUUIDFromParameter(HttpServletRequest request, final String name, boolean acceptsEmpty) {
+        final String value = request.getParameter(name);
+        if ((value == null || value.isEmpty()) && acceptsEmpty)
+            return null;
+        
+        return UUID.fromString(value);
     }
 
     private void dumpIfRequested(HttpServletRequest request) {

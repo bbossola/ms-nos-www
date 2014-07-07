@@ -62,6 +62,15 @@ public class CoreServletGetTest extends AbstractCoreServletTest {
     }
 
     @Test
+    public void shouldNotSend400IfMessageUUIDMissing() throws Exception {
+        
+        message = null;
+        invoke();
+        
+        verify(httpResponse).setStatus(200);
+    }
+
+    @Test
     public void shouldSendCloudIdToMessageStore() throws Exception {
         
         invoke();

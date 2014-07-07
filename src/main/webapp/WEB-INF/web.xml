@@ -11,9 +11,19 @@
 		<load-on-startup>30</load-on-startup>
 	</servlet>
 
+	<servlet>
+		<servlet-name>ping</servlet-name>
+		<servlet-class>com.msnos.www.servlet.PingServlet</servlet-class>
+	</servlet>
+
 	<servlet-mapping>
 		<servlet-name>messages</servlet-name>
-		<url-pattern>/messages/*</url-pattern>
+		<url-pattern>/api/1.0/messages</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>ping</servlet-name>
+		<url-pattern>/ping</url-pattern>
 	</servlet-mapping>
 
 </web-app>
