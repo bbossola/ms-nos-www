@@ -95,7 +95,7 @@ public abstract class AbstractCoreServletTest {
 	;
 
     protected Message newSampleMessage(final Iden from, final Iden to) {
-        return new MessageBuilder(Message.Type.ENQ, from, to).make();
+        return new MessageBuilder(MessageBuilder.Mode.RELAXED, Message.Type.ENQ, from, to).with(UUID.randomUUID()).make();
     }
 
 }
